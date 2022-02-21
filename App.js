@@ -1,13 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import type {Node} from 'react';
+import DailyEventCalendar from './src/components/Calendar/DailyEventCalendar';
+import AgendaScreen from './src/components/WixCalendar/AgendaScreen';
+import ExpandableCalendarScreen from './src/components/WixCalendar/ExpandableCalendar';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -16,6 +12,7 @@ import {
   Text,
   useColorScheme,
   View,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
@@ -25,71 +22,115 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import MonthCalendar from './src/components/WixCalendar/Calendars/MonthCalendar';
+import MonthCalendarMarked from './src/components/WixCalendar/Calendars/MonthCalendarMarked';
+import CustomMarking from './src/components/WixCalendar/Calendars/CustomMarking';
+// const Section = ({children, title}): Node => {
+//   const isDarkMode = useColorScheme() === 'dark';
+//   return (
+//     <View style={styles.sectionContainer}>
+//       <Text
+//         style={[
+//           styles.sectionTitle,
+//           {
+//             color: isDarkMode ? Colors.#fff : Colors.black,
+//           },
+//         ]}>
+//         {title}
+//       </Text>
+//       <Text
+//         style={[
+//           styles.sectionDescription,
+//           {
+//             color: isDarkMode ? Colors.light : Colors.dark,
+//           },
+//         ]}>
+//         {children}
+//       </Text>
+//     </View>
+//   );
+// };
 
-const Section = ({children, title}): Node => {
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
+  const [state, setState] = React.useState({
+    viewType: 'weekly',
+  });
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+    <>
+      <SafeAreaView>
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            // flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            backgroundColor: '#5467fe',
+            padding: 5,
           }}>
-            <Section title="Explain Zeeshan">
-              <Text>A Big Bulky Dog That Does Not Bite</Text>
-            </Section>
-          {/* <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section> */}
-          {/* <LearnMoreLinks /> */}
+          {/* <TouchableOpacity
+            style={{
+              backgroundColor: '#68a0cf',
+              padding: 10,
+              borderRadius: 3,
+              borderWidth: 1,
+              borderColor: state.viewType === 'schedule' ? 'white' : 'blue',
+            }}
+            onPress={() => setState({...state, viewType: 'schedule'})}>
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Schedule</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#68a0cf',
+              padding: 10,
+              borderRadius: 3,
+              borderWidth: 1,
+              borderColor: state.viewType === 'weekly' ? 'white' : 'blue',
+            }}
+            onPress={() => setState({...state, viewType: 'weekly'})}>
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Week</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#68a0cf',
+              padding: 10,
+              borderRadius: 3,
+              borderWidth: 1,
+              borderColor: state.viewType === 'monthly' ? 'white' : 'blue',
+            }}
+            onPress={() => console.log('Asd')}>
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Month</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#68a0cf',
+              padding: 10,
+              borderRadius: 3,
+              borderWidth: 1,
+              borderColor: state.viewType === 'yearly' ? 'white' : 'blue',
+            }}
+            onPress={() => setState({...state, viewType: 'yearly'})}>
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Year</Text>
+          </TouchableOpacity> */}
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+      {/* <MonthCalendar /> */}
+
+      {/* <CustomMarking /> */}
+      <>
+        {state.viewType === 'weekly' ? <AgendaScreen /> : <></>}
+        {state.viewType === 'monthly' ? <MonthCalendarMarked /> : <></>}
+        {state.viewType === 'schedule' ? <CustomMarking /> : <></>}
+        {state.viewType === 'yearly' ? <ExpandableCalendarScreen /> : <></>}
+      </>
+    </>
   );
 };
 
