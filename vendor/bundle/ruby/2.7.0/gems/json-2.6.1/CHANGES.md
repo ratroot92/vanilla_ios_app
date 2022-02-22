@@ -105,7 +105,7 @@
     I changed these mentions to be consistent with the Ruby license setting in
     the gemspec files which were already correct now.
 
-## 2015-06-01 (1.8.3)
+## 2015-06-01 (1.5.1)
   * Fix potential memory leak, thx to nobu.
 
 ## 2015-01-08 (1.8.2)

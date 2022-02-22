@@ -72,7 +72,7 @@ const App = () => {
             backgroundColor: '#5467fe',
             padding: 5,
           }}>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={{
               backgroundColor: '#68a0cf',
               padding: 10,
@@ -104,7 +104,7 @@ const App = () => {
               borderWidth: 1,
               borderColor: state.viewType === 'monthly' ? 'white' : 'blue',
             }}
-            onPress={() => console.log('Asd')}>
+            onPress={() => setState({...state, viewType: 'monthly'})}>
             <Text style={{color: '#fff', fontWeight: 'bold'}}>Month</Text>
           </TouchableOpacity>
 
@@ -118,7 +118,7 @@ const App = () => {
             }}
             onPress={() => setState({...state, viewType: 'yearly'})}>
             <Text style={{color: '#fff', fontWeight: 'bold'}}>Year</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
       {/* <MonthCalendar /> */}
@@ -126,7 +126,7 @@ const App = () => {
       {/* <CustomMarking /> */}
       <>
         {state.viewType === 'weekly' ? <AgendaScreen /> : <></>}
-        {state.viewType === 'monthly' ? <MonthCalendarMarked /> : <></>}
+        {state.viewType === 'monthly' ? <MonthCalendar /> : <></>}
         {state.viewType === 'schedule' ? <CustomMarking /> : <></>}
         {state.viewType === 'yearly' ? <ExpandableCalendarScreen /> : <></>}
       </>
