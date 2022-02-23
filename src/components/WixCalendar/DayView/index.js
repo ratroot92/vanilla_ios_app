@@ -227,7 +227,7 @@ export default function DayView() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-              <Text>{item.name}</Text>
+              <Text>asd</Text>
               <Avatar.Text label="J😇" />
             </View>
           </Card.Content>
