@@ -25,6 +25,7 @@ import {
 import MonthCalendar from './src/components/WixCalendar/Calendars/MonthCalendar';
 import MonthCalendarMarked from './src/components/WixCalendar/Calendars/MonthCalendarMarked';
 import CustomMarking from './src/components/WixCalendar/Calendars/CustomMarking';
+import DayView from './src/components/WixCalendar/DayView/';
 // const Section = ({children, title}): Node => {
 //   const isDarkMode = useColorScheme() === 'dark';
 //   return (
@@ -54,7 +55,7 @@ import CustomMarking from './src/components/WixCalendar/Calendars/CustomMarking'
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [state, setState] = React.useState({
-    viewType: 'weekly',
+    viewType: 'day',
   });
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -114,9 +115,9 @@ const App = () => {
               padding: 10,
               borderRadius: 3,
               borderWidth: 1,
-              borderColor: state.viewType === 'yearly' ? 'white' : 'blue',
+              borderColor: state.viewType === 'day' ? 'white' : 'blue',
             }}
-            onPress={() => setState({...state, viewType: 'yearly'})}>
+            onPress={() => setState({...state, viewType: 'day'})}>
             <Text style={{color: '#fff', fontWeight: 'bold'}}>Year</Text>
           </TouchableOpacity>
         </View>
@@ -128,7 +129,7 @@ const App = () => {
         {state.viewType === 'weekly' ? <AgendaScreen /> : <></>}
         {state.viewType === 'monthly' ? <MonthCalendar /> : <></>}
         {state.viewType === 'schedule' ? <CustomMarking /> : <></>}
-        {state.viewType === 'yearly' ? <ExpandableCalendarScreen /> : <></>}
+        {state.viewType === 'day' ? <DayView /> : <></>}
       </>
     </>
   );
