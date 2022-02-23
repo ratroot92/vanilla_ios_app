@@ -1,159 +1,64 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {addDays, format} from 'date-fns';
+// import { addDays, format } from 'date-fns';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import {DayAgenda} from 'react-native-calendars';
 import {Avatar, Card} from 'react-native-paper';
-import daAgendaData from '../data/dayagenda.json';
+import globalStyles from '../../../styles/global.style';
+
+import dayagenda from '../data/dayagenda.json';
+
+const renderItemStyles = StyleSheet.create({
+  cardWrapper: {
+    height: 70,
+    width: 120,
+    padding: 0,
+    backgroundColor: 'white',
+    marginLeft: 4,
+    marginRight: 4,
+    marginTop: 4,
+    marginBottom: 4,
+  },
+  scrollWrapper: {
+    centerContent: true,
+    flex: 1,
+  },
+  cardContentWrapper: {
+    flex: 1,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderLeftWidth: 3,
+  },
+  eventTypeText: {fontSize: 8, fontWeight: 'bold'},
+  eventNameText: {fontSize: 11, color: 'black', fontWeight: 'bold'},
+  eventDescriptionText: {
+    fontSize: 11,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  cardContentFooterWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  eventTimeText: {fontSize: 9, fontWeight: 'bold'},
+  eventParticipantWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 export default function DayView() {
-  const [items, setItems] = React.useState({
-    '2022-02-21': {
-      hours: [
-        {
-          hour: '9:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '10:00',
-          postFix: 'AM',
-
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '11:00',
-          postFix: 'AM',
-
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '12:00',
-          postFix: 'PM',
-
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '1:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '2:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '3:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '4:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-
-        {
-          hour: '5:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '6:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-
-        {
-          hour: '7:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-
-        {
-          hour: '8:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '9:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '10:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '11:00',
-          postFix: 'PM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '12:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '1:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '1:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '2:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '3:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '4:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '5:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '6:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '7:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-        {
-          hour: '8:00',
-          postFix: 'AM',
-          events: [{name: 'event name', description: 'description'}],
-        },
-      ],
-    },
-
-    // '2022-02-22': [
-    //   {name: 'event 1 of 2022-02-21'},
-    //   {name: 'event 2 of 2022-02-21'},
-    // ],
-    // '2022-02-23': [
-    //   {name: 'event 1 of 2022-02-21'},
-    //   {name: 'event 2 of 2022-02-21'},
-    // ],
-    // '2022-02-24': [{name: 'event 1 of 2022-02-21', events: true}],
-  });
+  const [items, setItems] = React.useState(dayagenda);
   /**
       {
       '2022-02-21': [
@@ -216,24 +121,55 @@ export default function DayView() {
     }, 1000);
   };
 
-  const renderItem = item => {
-    return (
-      <TouchableOpacity style={{padding: 10, marginRight: 10, marginTop: 17}}>
-        <Card>
-          <Card.Content>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <Text>asd</Text>
-              <Avatar.Text label="J😇" />
+  const renderItem = events => {
+    return events?.map((el, index) => (
+      <Card key={index} style={renderItemStyles.cardWrapper}>
+        <ScrollView
+          contentContainerStyle={renderItemStyles.scrollWrapper}
+          horizontal={true}>
+          <Card.Content
+            style={[
+              renderItemStyles.cardContentWrapper,
+              {
+                borderLeftColor: el.eventColor,
+              },
+            ]}>
+            <View style={{flex: 1, padding: 0}}>
+              <Text
+                style={[
+                  renderItemStyles.eventTypeText,
+                  {color: el.eventColor},
+                ]}>
+                {el.type}
+              </Text>
+              <Text style={renderItemStyles.eventNameText}>
+                {el.description}
+              </Text>
+              <Text style={renderItemStyles.eventDescriptionText}>
+                {el.name}
+              </Text>
+            </View>
+            <View style={renderItemStyles.cardContentFooterWrapper}>
+              <Text style={renderItemStyles.eventTimeText}>
+                {el.startTime} - {el.endTime}
+              </Text>
+              <View style={renderItemStyles.eventParticipantWrapper}>
+                <Avatar.Image
+                  size={13}
+                  source={require('../../../assets/images/avatar_1.jpeg')}
+                  style={{marginRight: -2}}
+                />
+                <Avatar.Image
+                  size={13}
+                  source={require('../../../assets/images/avatar_1.jpeg')}
+                  style={{marginLeft: -2}}
+                />
+              </View>
             </View>
           </Card.Content>
-        </Card>
-      </TouchableOpacity>
-    );
+        </ScrollView>
+      </Card>
+    ));
   };
 
   return (
