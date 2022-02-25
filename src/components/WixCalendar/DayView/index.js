@@ -1,20 +1,14 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
 // import { addDays, format } from 'date-fns';
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {DayAgenda} from 'react-native-calendars';
 import {Avatar, Card} from 'react-native-paper';
-import globalStyles from '../../../styles/global.style';
-
+import {format} from 'date-fns';
+import {en} from 'date-fns/locale';
 import dayagenda from '../data/dayagenda.json';
-
+// import dateUtils from '../../../utils/date.utils';
 const renderItemStyles = StyleSheet.create({
   cardWrapper: {
     height: 70,
@@ -58,16 +52,45 @@ const renderItemStyles = StyleSheet.create({
 });
 
 export default function DayView() {
-  const [items, setItems] = React.useState(dayagenda);
-  /**
-      {
-      '2022-02-21': [
-        {name: 'event 1 of 2022-02-21', cookies: true},
-        {name: 'event 2 of 2022-02-21', cookies: false},
-      ],
-      '2022-02-23': [{name: 'event 1 of 2022-02-21', cookies: true}],
-      }
-    */
+  const month = format(new Date(), 'LLLL', {locale: en});
+  let currentDay = new Date(); // get current date
+  let monthFirstDay = currentDay.getDate() - currentDay.getDay(); // First day is the day of the month - the day of the week
+  let monthLastDay = monthFirstDay + 6; // monthLastDay day is the monthFirstDay day + 6
+  monthFirstDay = format(
+    new Date(currentDay.setDate(monthFirstDay)),
+    'yyyy-MM-dd',
+  );
+  monthLastDay = format(
+    new Date(currentDay.setDate(monthLastDay)),
+    'yyyy-MM-dd',
+  );
+
+  const [state, setState] = React.useState({
+    items: dayagenda,
+    loading: false,
+    currentDay: format(currentDay, 'yyyy-MM-dd'),
+    monthLastDay,
+    monthFirstDay,
+    month,
+    year: new Date().getFullYear(),
+    dayName: format(currentDay, 'EEEE'),
+  });
+
+  React.useEffect(() => {
+    let currentDay = new Date(); // get current date
+    let monthFirstDay = currentDay.getDate() - currentDay.getDay(); // First day is the day of the month - the day of the week
+    let monthLastDay = monthFirstDay + 6; // monthLastDay day is the monthFirstDay day + 6
+    monthFirstDay = format(
+      new Date(currentDay.setDate(monthFirstDay)),
+      'yyyy-MM-dd',
+    );
+    monthLastDay = format(
+      new Date(currentDay.setDate(monthLastDay)),
+      'yyyy-MM-dd',
+    );
+    currentDay = format(currentDay, 'yyyy-MM-dd');
+    setState(() => ({...state, currentDay, monthLastDay, monthFirstDay}));
+  }, [state.month]);
 
   // React.useEffect(() => {
   //   const getEvents = async () => {
@@ -91,35 +114,11 @@ export default function DayView() {
   //   getEvents();
   // }, []);
 
-  React.useEffect(() => {}, [items]);
-
-  function timeToString(time) {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-  }
-  const loadItems = day => {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = timeToString(time);
-        if (!items[strTime]) {
-          items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 3 + 1);
-          for (let j = 0; j < numItems; j++) {
-            items[strTime].push({
-              name: 'Item for ' + strTime + ' #' + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-            });
-          }
-        }
-      }
-      const newItems = {};
-      Object.keys(items).forEach(key => {
-        newItems[key] = items[key];
-      });
-      setItems(newItems);
-    }, 1000);
-  };
+  React.useEffect(() => {
+    console.log('**********************');
+    console.log('state.currentDay', state.currentDay);
+    console.log('**********************');
+  }, [state]);
 
   const renderItem = events => {
     return events?.map((el, index) => (
@@ -174,12 +173,65 @@ export default function DayView() {
 
   return (
     <View style={{flex: 1}}>
+      <View>
+        <Text style={{fontSize: 12, color: '#000', fontWeight: 'bold'}}>
+          {state.month}
+          {state.year}
+        </Text>
+        <Text style={{fontSize: 12, color: '#000', fontWeight: 'bold'}}>
+          {state.dayName}
+        </Text>
+      </View>
       <DayAgenda
         // testID={testIDs.agenda.CONTAINER}
-        items={items}
-        // loadItemsForMonth={loadItems}
-        selected={'2022-02-21'}
+        items={state.items}
+        selected={state.currentDay}
         renderItem={renderItem}
+        current={state.currentDay}
+        minDate={state.monthFirstDay}
+        maxDate={state.monthLastDay}
+        loadItemsForMonth={month => {
+          console.log('trigger items loading', month);
+        }}
+        onCalendarToggled={calendarOpened => {
+          console.log('calendarOpened', calendarOpened);
+        }}
+        onDayPress={data => {
+          const {dateString, day, month, timestamp, year} = data;
+          setState(prevState => ({
+            ...prevState,
+            // month: dateUtils.getMonthNameByNumber(month),
+            day: dateString,
+            dayName: format(dateString, 'EEEE'),
+          }));
+        }}
+        onDayChange={day => {
+          console.log('day changed');
+        }}
+        pastScrollRange={50}
+        futureScrollRange={50}
+        renderEmptyDate={() => {
+          return (
+            <View>
+              <Text>Empty Date</Text>
+            </View>
+          );
+        }}
+        // Specify what should be rendered instead of ActivityIndicator
+        renderEmptyData={() => {
+          return (
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{fontWeight: 'bold'}}>
+                No Events for {state.currentDay}
+              </Text>
+            </View>
+          );
+        }}
+        hideKnob={true}
+        showClosingKnob={true}
+        onRefresh={() => console.log('refreshing...')}
+        refreshing={state.loading}
       />
     </View>
   );
