@@ -220,7 +220,6 @@ export default function DayView() {
         // loadItemsForMonth={month => {}}
         // onCalendarToggled={calendarOpened => {}}
         onDayPress={data => {
-          console.log(data);
           // const {dateString, day, month, timestamp, year} = data;
           setState(prevState => ({
             ...prevState,
