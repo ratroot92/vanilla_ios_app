@@ -57,10 +57,8 @@ const renderItemStyles = StyleSheet.create({
 export default function DayView() {
   const month = format(new Date(), 'LLLL', {locale: en});
   const current = new Date();
-  var monthFirstDay = moment(
-    new Date(current.getFullYear(), current.getMonth(), 1),
-  );
-  var monthLastDay = moment(
+  var minDate = moment(new Date(current.getFullYear(), current.getMonth(), 1));
+  var maxDate = moment(
     new Date(current.getFullYear(), current.getMonth() + 1, 0),
   );
 
@@ -68,28 +66,37 @@ export default function DayView() {
     items: dayagenda,
     loading: false,
     current: format(current, 'yyyy-MM-dd'),
-    monthLastDay,
-    monthFirstDay,
+    maxDate: moment(minDate).format('YYYY-MM-DD').toString(),
+    minDate: moment(maxDate).format('YYYY-MM-DD').toString(),
     month,
     year: new Date().getFullYear(),
     dayName: format(current, 'EEEE'),
   });
 
-  React.useEffect(() => {
-    const current = new Date();
-    var monthFirstDay = moment(
-      new Date(current.getFullYear(), current.getMonth(), 1),
-    );
-    var monthLastDay = moment(
-      new Date(current.getFullYear(), current.getMonth() + 1, 0),
-    );
-    setState(() => ({
-      ...state,
-      current: moment(current).format('YYYY-MM-DD'),
-      monthLastDay,
-      monthFirstDay,
-    }));
-  }, [state.month]);
+  // React.useEffect(() => {
+  //   const current = new Date();
+  //   var minDate = moment(
+  //     new Date(current.getFullYear(), current.getMonth(), 1),
+  //   );
+  //   var maxDate = moment(
+  //     new Date(current.getFullYear(), current.getMonth() + 1, 0),
+  //   );
+  //   console.log('**************************************');
+  //   console.log('minDate ==>', minDate);
+  //   console.log('maxDate ==>', maxDate);
+  //   console.log('**************************************');
+  //   console.log('minDate ==>', moment(minDate).format('YYYY-MM-DD').toString());
+  //   console.log('maxDate ==>', moment(maxDate).format('YYYY-MM-DD').toString());
+  //   console.log('**************************************');
+
+  //   console.log('**************************************');
+  //   setState(() => ({
+  //     ...state,
+  //     current: moment(current).format('YYYY-MM-DD'),
+  //     maxDate,
+  //     minDate,
+  //   }));
+  // }, [state.month]);
 
   // React.useEffect(() => {
   //   const getEvents = async () => {
@@ -209,14 +216,15 @@ export default function DayView() {
           </View>
         </View>
       </View>
+
       <DayAgenda
         // testID={testIDs.agenda.CONTAINER}
         items={state.items}
         selected={state.current}
         renderItem={renderItem}
         current={state.current}
-        minDate={state.monthFirstDay}
-        maxDate={state.monthLastDay}
+        minDate={state.minDate}
+        maxDate={state.maxDate}
         // loadItemsForMonth={month => {}}
         // onCalendarToggled={calendarOpened => {}}
         onDayPress={data => {
