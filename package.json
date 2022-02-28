@@ -1,0 +1,46 @@
+{
+  "name": "testapp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "npm run android && react-native start --reset-cache",
+    "test": "jest",
+    "lint": "eslint .",
+    "android-clean": "cd android && ./gradlew clean && cd ..",
+    "build-apk": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "generate-apk": "cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
+    "build":"npm run  android-clean && npm run build-apk && npm run generate-apk  ",
+    "ts": "yarn tsc"
+  },
+  "dependencies": {
+    "@react-native-community/cli": "^6.4.0",
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/stack": "^6.1.1",
+    "date-fns": "^2.28.0",
+    "moment": "^2.29.1",
+    "react": "17.0.2",
+    "react-native": "0.67.2",
+    "react-native-calendar-strip": "^2.2.5",
+    "react-native-calendars": "^1.1278.0",
+    "react-native-events-calendar": "^1.0.8",
+    "react-native-paper": "^4.11.2",
+    "react-native-safe-area-context": "^3.4.1",
+    "react-native-screens": "^3.12.0",
+    "xdate": "^0.8.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "7.14.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-test-renderer": "17.0.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
